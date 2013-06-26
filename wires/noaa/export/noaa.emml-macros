@@ -1,0 +1,156 @@
+<EmmlMacroExports>
+<EmmlMacroExport domain="Weather" >
+<macro domain="Weather" name="LatLonListSubgrid" xmlns="http://www.openmashup.org/schemas/v1.0/EMML" xmlns:fn="java:org.oma.emml.utils.EMMLFunctions" xmlns:macro="http://www.openmashup.org/schemas/v1.0/EMMLMacro" xmlns:presto="http://www.jackbe.com/v1.0/EMMLPrestoExtensions" xmlns:urn="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<input default="38.89" name="lowerLeftLatitude" type="decimal"/>
+	<input default="-77.03" name="lowerLeftLongitude" type="decimal"/>
+	<input default="39.89" name="upperRightLatitude" type="decimal"/>
+	<input default="-78.03" name="upperRightLongitude" type="decimal"/>
+	<input default="1" name="resolution" type="decimal"/>
+
+	<presto:macro-meta name="help"> 
+		<parameters> 
+			<parameter name="lowerLeftLatitude">
+				<label>Lower Left Latitude</label>
+				<required>true</required> 
+				<type datatype="float"/> 
+			</parameter>
+			<parameter name="lowerLeftLongitude">
+				<label>Lower Left Longitude</label>
+				<required>true</required> 
+				<type datatype="float"/> 
+			</parameter>
+			<parameter name="upperRightLatitude">
+				<label>Upper Right Latitude</label>
+				<required>true</required> 
+				<type datatype="float"/> 
+			</parameter>
+			<parameter name="upperRightLongitude">
+				<label>Upper Right Longitude</label>
+				<required>true</required> 
+				<type datatype="float"/> 
+			</parameter> 
+			<parameter name="resolution">
+				<label>Resolution</label>
+				<required>true</required> 
+				<type datatype="float"/> 
+			</parameter>												
+		</parameters>
+			<block usage="Wires"> 
+				<label>NOAA Query by Rectangle</label>
+				<help>Returns a list of Latitude and longitude pairs for a rectangle defined by its lower left and upper right points. Provides points in a format suitable for use in calling multi-point functions NDFDgenLatLonList and NDFDgenByDayLatLonList. Supports latitudes and longitudes for the Continental United States, Alaska, Hawaii, Guam, and Puerto Rico.</help>	
+				<icon url="/presto/files/noaa-small.png" usage="menu"/> 
+				<icon url="/presto/files/noaa-big.png" usage="canvas"/> 
+			</block> 
+	</presto:macro-meta> 
+	
+	<output name="result" type="document"/>
+
+	<variables>
+		<variable name="NDFDgenRequest" type="document"/>
+		<variable name="NDFDgenRequestHeader" type="document"/>
+		<variable name="dwmlString" type="string"/>
+	</variables>
+	
+	<constructor outputvariable="NDFDgenRequestHeader">
+		<header>
+			<serviceHeader/>
+		</header>
+	</constructor>
+
+	<constructor outputvariable="NDFDgenRequest">
+		<ndf:LatLonListSubgrid xmlns:ndf="http://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl">
+			<lowerLeftLatitude>{$lowerLeftLatitude}</lowerLeftLatitude>
+			<lowerLeftLongitude>{$lowerLeftLongitude}</lowerLeftLongitude>
+			<upperRightLatitude>{$upperRightLatitude}</upperRightLatitude>
+			<upperRightLongitude>{$upperRightLongitude}</upperRightLongitude>
+			<resolution>{$resolution}</resolution>
+		</ndf:LatLonListSubgrid>
+	</constructor>
+	<invoke header="NDFDgenRequestHeader" inputvariables="NDFDgenRequest" operation="NDFDgen" outputvariable="result" service="NOAA"/>
+	
+	<assign fromexpr="$result//listLatLonOut/string()" mode="replace" outputvariable="$dwmlString"/>
+	<assign fromvariable="$dwmlString" mode="replace" outputvariable="result"/>
+
+</macro>
+</EmmlMacroExport>
+<EmmlMacroExport domain="Weather" >
+<macro domain="Weather" name="NDFDgenLatLonList" xmlns="http://www.openmashup.org/schemas/v1.0/EMML" xmlns:fn="java:org.oma.emml.utils.EMMLFunctions" xmlns:macro="http://www.openmashup.org/schemas/v1.0/EMMLMacro" xmlns:presto="http://www.jackbe.com/v1.0/EMMLPrestoExtensions" xmlns:urn="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<input default="34.986638,-82.027411 35.120891,-82.011661 35.255084,-81.995872 35.389215,-81.980045 35.523285,-81.964180 34.973669,-81.863528 35.107911,-81.847581 35.242094,-81.831596 35.376216,-81.815571 35.510276,-81.799508 34.960536,-81.699684 35.094768,-81.683540 35.228941,-81.667358 35.363052,-81.651136 35.497102,-81.634876 34.947240,-81.535878 35.081463,-81.519539 35.215625,-81.503160 35.349726,-81.486741 35.483766,-81.470282" name="listLatLon" type="string"/>
+	<input default="2013-06-12T21:32:52" name="startTime" type="datetime"/>
+	<input default="2013-06-13T21:32:52" name="endTime" type="datetime"/>
+	<input default="e" name="unit" type="string"/>
+
+	<presto:macro-meta name="help"> 
+		<parameters> 
+			<parameter name="listLatLon">
+				<label>List of Latitude and Longitudes</label>
+				<required>true</required> 
+				<type datatype="string"/> 
+			</parameter>
+			<parameter name="startTime"> 
+					<label>Start Time (local)</label> 
+					<required>true</required> 
+					<type datatype="datetime"> 
+						<datetimefield format="yy-mm-ddThh:mm:ss"/>
+					</type>
+			</parameter> 
+			<parameter name="endTime"> 
+					<label>Start Time (local)</label> 
+					<required>true</required> 
+					<type datatype="datetime"> 
+						<datetimefield format="yy-mm-ddThh:mm:ss"/> 
+					</type>
+			</parameter> 
+			<parameter name="unit">
+					<label>Unit of forecast data</label> 
+					<required>true</required> 
+					<type datatype="enum"> 
+						<list> 
+							<option label="English Units">e</option> 
+							<option label="Metric Units">m</option> 
+						</list> 
+					</type> 
+			</parameter>											 
+		</parameters>
+			<block usage="Wires"> 
+				<label>NOAA Digital Weather Forecast</label> 
+				<help>Returns National Weather Service digital weather forecast data. Supports latitudes and longitudes for the Continental United States, Alaska, Hawaii, Guam, and Puerto Rico only.</help> 
+				<icon url="/presto/files/noaa-small.png" usage="menu"/> 
+				<icon url="/presto/files/noaa-big.png" usage="canvas"/> 
+			</block> 
+	</presto:macro-meta> 
+	
+	<output name="result" type="document"/>
+
+	<variables>
+		<variable name="NDFDgenRequest" type="document"/>
+		<variable name="NDFDgenRequestHeader" type="document"/>
+		<variable name="dwmlString" type="string"/>
+	</variables>
+	
+	<constructor outputvariable="NDFDgenRequestHeader">
+		<header>
+			<serviceHeader/>
+		</header>
+	</constructor>
+
+	<constructor outputvariable="NDFDgenRequest">
+		<ndf:NDFDgenLatLonList xmlns:ndf="http://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl">
+			<listLatLon>{$listLatLon}</listLatLon>
+			<product>time-series</product>
+			<startTime>{$startTime}</startTime>
+			<endTime>{$startTime}</endTime>
+			<Unit>{$unit}</Unit>
+		</ndf:NDFDgenLatLonList>
+	</constructor>
+	<invoke header="NDFDgenRequestHeader" inputvariables="NDFDgenRequest" operation="NDFDgenLatLonList" outputvariable="result" service="NOAA"/>
+	
+	<assign fromexpr="$result//dwmlOut/string()" mode="replace" outputvariable="$dwmlString"/>
+	<assign fromvariable="$dwmlString" mode="replace" outputvariable="result"/>
+
+</macro>
+</EmmlMacroExport>
+
+</EmmlMacroExports>
