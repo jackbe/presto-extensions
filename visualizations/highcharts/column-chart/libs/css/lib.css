@@ -1,0 +1,50 @@
+.pluggable-view-config-tbl {
+	margin: 10px 5px;	
+	width: 350px;
+	border: 1px solid #AAAAAA;	
+	font: 11px "Lucida Grande", Tahoma, verdana, sans-serif;
+	color: #777777;
+}
+table.pluggable-view-config-tbl tr td {
+	padding: 0 15px;	
+}
+.pluggable-view-config-header {
+	border-bottom: 1px solid #DDDDDD;
+	font-size: 12px; 
+	height: 25px;
+	line-height: 25px;
+	background: #F9F9F9;
+	margin: 2px;
+	font-weight: normal;
+}
+.stacked-chart-config-tbl TD {
+	padding-left: 3px;	
+}
+.stacked_chart_section {
+	padding: 10px 0;
+	font-weight: bold;	
+}
+.stacked_chart_series {
+	width: 100%;
+}
+.combobox {
+	width: 150px;	
+}
+.chart-preview {
+	border: 1px solid #ddd;	
+}
+.stacked_chart_series_container {
+	width: 100%;
+	height: 120px;
+	overflow: auto;
+}
+.controlsDiv {
+  margin: 25px;
+}
+#slider-range-max {
+  width: 150px;
+}
+.highlight {
+    background-color:#FF6;
+    border: 1px solid #FC6;
+}
