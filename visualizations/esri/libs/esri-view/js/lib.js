@@ -132,8 +132,8 @@
 	            rows.each(function(row, i){
 	            	var n,x,y;
 	            	if (props.map_pointselector === 'lat-lon') {
-	            		x=row[props.map_latitude];
-	            		y=row[props.map_longitude];
+	            		y=row[props.map_latitude];
+	            		x=row[props.map_longitude];
 	            	} else {
 	            		n=row[props.map_point].split(" ");
 	            		x=n[1];
