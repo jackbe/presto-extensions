@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <project name="ESRI Pluggable View" default="all" basedir=".">
+    <property file="build.properties"/>
+    <property name="libs.dir" value="${basedir}/libs" />
+    <property name="src.dir" value="${basedir}/src" />
+    <property name="apps.dir" value="${basedir}/apps" />
+    <taskdef name="presto.lib.import" classname="com.jackbe.jbp.sas.cli.ant.ImportLib" classpath="C:\Users\Cynthia\Presto-Installations\Presto-3.6\Presto-3.6-20130531\prestocli\dist\prestocli.jar" />
+ 	
+ 	 <target name="esri-libraries">
+ 	    <presto.lib.import 
+ 	 	   id="esri"
+ 	 	   name="ESRI Map Libraries"
+ 	 	   description="ESRI Map Libraries"
+ 	 	   loadConfirmation="dojo"
+ 	 	   libPath="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4"
+ 	       js="/init.js"
+ 	       css="/js/dojo/dijit/themes/claro/claro.css, /js/esri/css/esri.css"
+ 	 	   verbose="true"
+ 	    />
+ 	 </target>
+ 	
+	<target name="esri-map">
+        <presto.lib.import
+            dir="${libs.dir}/esri-view"
+            id="esri-map"
+            name="ESRI Map View"
+            description="ESRI Map View"
+            loadConfirmation="ESRI.view.BasicMap"
+            type="view"
+            subtype="Maps"
+            dependsOn="jquery, esri"
+        	overwrite="true"
+        />
+    </target>
+
+    <target name="all" depends="esri-libraries, esri-map"></target>
+ </project>
