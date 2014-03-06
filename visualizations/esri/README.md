@@ -12,11 +12,14 @@ Installation
 3. Open the build.xml file and update the presto.lib.import variable to point to a copy the prestocli.jar library on your local machine.
 4. Run the build file and ensure the library was deployed correctly to Presto.
 
-View Usage
+Usage
 =================
 
-1. In order to use this view the underlying service must have geo-information in the form of a Point(Lat, Lon) or Latitude and Longitude.
-
+1. In order to use this view the underlying service must have geo-information in the form of a Point(Lat, Lon) or Latitude and Longitude.  Open the service in the Presto Hub.
+2. ![Configure](tutorial-images/screenshot1.png "ESRI Pluggable View")
+3. ![Configure](tutorial-images/screenshot2.png "ESRI Pluggable View")
+4. ![Configure](tutorial-images/screenshot3.png "ESRI Pluggable View")
+5. ![Configure](tutorial-images/screenshot4.png "ESRI Pluggable View")
 
 Tested On
 =================
